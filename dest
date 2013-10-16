@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Pattern Library</title>
+<link rel="stylesheet" href="_utils/pattern-base.css">
+<link rel="stylesheet" href="/styles/main.css">
+
+<script type="text/javascript" src="_utils/jquery.js"></script>
+
+<script>
+
+$(function () {
+
+   $('.pattern .source').append('<span class="expand-toggle"> - </span>');
+
+   $('.expand-toggle').on('click', function(){
+       $(this).parent('.source').toggleClass('is-collapsed');
+   })
+
+   $('.pattern .source').addClass('is-collapsed');
+
+});
+
+</script>
+
+</head>
+
+<body style="background: white none">
+</body></html>
