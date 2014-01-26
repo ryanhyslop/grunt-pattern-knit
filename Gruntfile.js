@@ -32,8 +32,11 @@ module.exports = function(grunt) {
 
     patternknit : {
       dist : {
+        options : {
+          css: 'mycss.css'
+        },
         src: ['pattern-library/patterns/**/*.html'],
-        dest: 'pattern-library/index.html'
+        dest: 'pattern-library/'
       }
     },
 

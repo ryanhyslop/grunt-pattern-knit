@@ -10,6 +10,8 @@
 
 module.exports = function(grunt) {
 
+  var _ = require('underscore');
+
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
@@ -31,35 +33,15 @@ module.exports = function(grunt) {
 
         patternHtmlJoined;
 
-    // Some utility functions
-
-    // Simple html character encoding
-    function htmlEncode (text) {
-        return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-    }
-
 
     // Merge pattern into a template
     function patternWrap ( pattern, filename ) {
 
-        // This is a bit shit, would be nice to parse with an external template
         var content;
 
-        content = '<div class="pattern">';
-        content += '<div class="pattern-title">';
-        content += filename;
-        content += '</div>';
-        content += '<div class="display">';
-        content += pattern;
-        content += '</div><div class="source"><textarea rows="6" cols="30">';
-        content += htmlEncode(pattern);
-        content += '</textarea>';
-        content += '</div></div>';
+        var template = grunt.file.read('assets/pattern-template.html');
+
+        content = _.template(template, { pattern: pattern, filename: filename });
 
         return content;
 
@@ -79,9 +61,9 @@ module.exports = function(grunt) {
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
-      // Concat specified files.
-      grunt.log.warn(f);
-      var src = f.src.filter(function(filepath) {
+        // Concat specified files.
+        grunt.log.warn(f);
+        var src = f.src.filter(function(filepath) {
         // Warn on and remove invalid source files (if nonull was set).
         if (!grunt.file.exists(filepath)) {
           grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -89,7 +71,7 @@ module.exports = function(grunt) {
         } else {
           return true;
         }
-      }).map(function(filepath) {
+        }).map(function(filepath) {
            grunt.log.writeln(filepath);
             var filename = getFileName(filepath);
 
@@ -97,22 +79,33 @@ module.exports = function(grunt) {
 
             return patternWrap(grunt.file.read(filepath), filename);
 
-      }).join('');
+        }).join('');
 
-      // Handle options.
-      patternHtml.push(src);
+        // Handle options.
+        patternHtml.push(src);
 
-      patternHtml.push(footerHtml);
+        patternHtml.push(footerHtml);
 
-      // Write joined contents to destination filepath.
-      patternHtmlJoined = patternHtml.join('');
+        // Write joined contents to destination filepath.
+        patternHtmlJoined = patternHtml.join('');
 
-      grunt.file.write(f.dest, patternHtmlJoined);
-
-      // Print a success message.
-      grunt.log.ok("Pattern Library Has Been Created");
+        grunt.file.write(f.dest + 'index.html', patternHtmlJoined);
 
     });
+
+    grunt.file.copy('assets/base.css', this.data.dest + 'styles/base.css');
+
+    if(options.css){
+        if (!grunt.file.exists(options.css)) {
+            grunt.log.warn('CSS file specified "' + filepath + '" not found.');
+        } else {
+            grunt.file.copy(options.css, this.data.dest + 'styles/main.css');
+        }
+
+    }
+    // Print a success message.
+    grunt.log.ok("Pattern Library Has Been Created");
+
   });
 
 };
