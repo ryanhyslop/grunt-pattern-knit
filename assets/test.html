@@ -1,0 +1,174 @@
+<% _.each(underlyings, function(underlying, index) { %>
+<div class="order-grid__item" underlying>
+<div class="underlying" data-underlying-name="{{ underlyings[<%= index %>].name }}" data-underlying-loco="{{ underlyings[<%= index %>].loco }}">
+
+    <div class="underlying__header">
+
+        <button
+            class="btn btn--icon btn--run"
+            ng-if="orderBookState === 'order'"
+            ng-click="createRun(underlying)"
+            title="Leave run">
+            <i class="icon-run"></i>
+
+        </button>
+
+        <h2 bindonce class="underlying__name">
+
+            <span bo-text="underlyings[<%= index %>].name"></span>
+
+            <span bindonce="underlyings[<%= index %>].loco" class="underlying__loco underlying__loco--floating" bo-text="underlyings[<%= index %>].loco"></span>
+
+        </h2>
+
+    </div>
+
+    <div class="underlying__container">
+
+        <div class="order-grid__row">
+
+            <div class="underlying__col-labels">
+
+                <div class="order-grid__col">
+                    <span class="label">
+                        Bids
+                        <small>(bp)</small>
+                    </span>
+                </div>
+
+                <div class="order-grid__col">
+                    <span class="label">
+                        Offers
+                        <small>(bp)</small>
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <% _.each(maturities, function(maturity, mIndex) { %>
+
+        <div class="order-grid__row" bindonce hover="setHoverMaturity(underlyings[<%= index %>].maturity[<%= mIndex %>].name)">
+
+            <div class="market" bo-attr bo-attr-data-maturity-name="underlyings[<%= index %>].maturity[<%= mIndex %>].name">
+
+                <div class="order-grid__col nth-1 market__bids">
+
+                    <span ng-if="underlyings[<%= index %>].maturity[<%= mIndex %>].bids.organisation_other_prices"
+                          class="market__nubbin market__nubbin--other-bid"
+                          ng-class="{ 'market__nubbin--is-owner': user.inOtherOrders(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.other_owners) }">
+                    </span>
+
+                    <div class="order-grid__cell nth-1">
+
+                        <div
+                            class="market__order market__order--second-price"
+                            market-order="underlyings[<%= index %>].maturity[<%= mIndex %>].bids.second"
+                            user="user"
+                            hover="setHoveredOcoGroup(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.second)"
+                            ng-mouseleave="unsetHoveredOcoGroup()"
+                            ng-class="{
+                            'market__order--is-organisation': underlyings[<%= index %>].maturity[<%= mIndex %>].bids.second.is_organisation,
+                            'market__order--is-owner': user.isOwner(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.second),
+                            'market__order--oco-hovered': isOcoGroupHovered(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.second.oco_group)
+                            }"
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="order-grid__cell nth-2" ng-click="aggress(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best)">
+
+
+
+                        <div
+                            class="market__order market__order--best-price"
+                            market-order="underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best"
+                            hover="setHoveredOcoGroup(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best)"
+                            user="user"
+                            ng-mouseleave="unsetHoveredOcoGroup()"
+                            ng-class="{
+                            'market__order--is-aggressable' : isAggressable(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best),
+                            'market__order--is-organisation': underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best.is_organisation,
+                            'market__order--is-owner': user.isOwner(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best),
+                            'market__order--oco-hovered': isOcoGroupHovered(underlyings[<%= index %>].maturity[<%= mIndex %>].bids.best.oco_group)
+                            }"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="market__action" ng-click="handleOrder(underlying, maturity, 'bid')">
+                        <span ng-if="!userHasAPrice(underlyings[<%= index %>].maturity[<%= mIndex %>].bids)">Leave <br/> Bid</span>
+                        <span ng-if="userHasAPrice(underlyings[<%= index %>].maturity[<%= mIndex %>].bids)">Leave / Amend Bid</span>
+                    </div>
+
+                </div>
+
+                <div class="order-grid__col nth-2 market__offers">
+
+                    <span ng-if="underlyings[<%= index %>].maturity[<%= mIndex %>].offers.organisation_other_prices" class="market__nubbin market__nubbin--other-offer" ng-class="{ 'market__nubbin--is-owner': user.inOtherOrders(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.other_owners) }"></span>
+
+                    <div class="order-grid__cell nth-1" ng-click="aggress(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best)">
+
+                        <div
+                            class="market__order market__order--best-price"
+                            market-order="underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best"
+                            hover="setHoveredOcoGroup(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best)"
+                            ng-mouseleave="unsetHoveredOcoGroup()"
+                            user="user"
+                            ng-class="{
+                            'market__order--is-aggressable' : isAggressable(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best),
+                            'market__order--is-organisation': underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best.is_organisation,
+                            'market__order--is-owner': user.isOwner(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best),
+                            'market__order--oco-hovered': isOcoGroupHovered(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.best.oco_group)
+                            }"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="order-grid__cell nth-2">
+
+                        <div
+                            class="market__order market__order--second-price"
+                            market-order="underlyings[<%= index %>].maturity[<%= mIndex %>].offers.second"
+                            hover="setHoveredOcoGroup(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.second)"
+                            ng-mouseleave="unsetHoveredOcoGroup()"
+                            user="user"
+                            ng-class="{
+                            'market__order--is-organisation': underlyings[<%= index %>].maturity[<%= mIndex %>].offers.second.is_organisation,
+                            'market__order--is-owner': user.isOwner(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.second),
+                            'market__order--oco-hovered': isOcoGroupHovered(underlyings[<%= index %>].maturity[<%= mIndex %>].offers.second.oco_group)
+                            }"
+                             >
+
+                        </div>
+
+                    </div>
+
+                    <div class="market__action" ng-click="handleOrder(underlying, maturity, 'offer')">
+                        <span ng-if="!userHasAPrice(underlyings[<%= index %>].maturity[<%= mIndex %>].offers)">Leave <br/> Offer</span>
+                        <span ng-if="userHasAPrice(underlyings[<%= index %>].maturity[<%= mIndex %>].offers)">Leave / Amend Offer</span>
+                    </div>
+
+                </div>
+
+                <div class="market__view-all" ng-click="openAllOrders(underlying, maturity)" ng-if="showMagnifier(maturity)">
+                    <i class="icon-search"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+        <% }); %>
+
+    </div>
+</div>
+</div>
+<% }); %>

@@ -54,7 +54,6 @@ module.exports = function(grunt) {
             return filename;
         }
 
-
         // Add header to array
 
         patternHtml.push(headerHtml);
