@@ -93,15 +93,6 @@ module.exports = function(grunt) {
 
         });
 
-        var template = grunt.file.read('assets/test.html');
-        var underlyings = [{"id":43,"name":"xau\/usd","minimum_quantity":15,"loco_long":"London","loco":"LDN"},{"id":44,"name":"xag\/usd","minimum_quantity":200,"loco_long":"London","loco":"LDN"},{"id":45,"name":"xpt\/usd","minimum_quantity":5,"loco_long":"London","loco":"LDN"},{"id":46,"name":"xpd\/usd","minimum_quantity":5,"loco_long":"London","loco":"LDN"},{"id":47,"name":"xpt\/usd","minimum_quantity":5,"loco_long":"Zurich","loco":"ZUR"},{"id":48,"name":"xpd\/usd","minimum_quantity":5,"loco_long":"Zurich","loco":"ZUR"}];
-        var maturities = [{"id":148,"name":"o\/n"},{"id":149,"name":"t\/n"},{"id":150,"name":"s\/n"},{"id":151,"name":"1w"},{"id":152,"name":"2w"},{"id":153,"name":"1m"},{"id":154,"name":"2m"},{"id":155,"name":"3m"},{"id":156,"name":"6m"},{"id":157,"name":"9m"},{"id":158,"name":"12m"},{"id":159,"name":"18m"},{"id":160,"name":"2y"},{"id":161,"name":"3y"},{"id":162,"name":"4y"},{"id":163,"name":"5y"},{"id":164,"name":"6y"},{"id":165,"name":"7y"},{"id":166,"name":"8y"},{"id":167,"name":"9y"},{"id":168,"name":"10y"}];
-        var test;
-
-        test = _.template(template, { underlyings: underlyings, maturities: maturities });
-
-        grunt.file.write('sample.html', test);
-
         grunt.file.copy('assets/base.css', this.data.dest + 'styles/base.css');
 
         if(options.css){
