@@ -89,7 +89,7 @@ module.exports = function(grunt) {
             // Write joined contents to destination filepath.
             patternHtmlJoined = patternHtml.join('');
 
-            // grunt.file.write(f.dest + 'index.html', patternHtmlJoined);
+            grunt.file.write(f.dest + 'index.html', patternHtmlJoined);
 
         });
 

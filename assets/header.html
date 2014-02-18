@@ -14,16 +14,48 @@
 
 <script>
 
-$(function () {
+
+var buildSourceToggles = function () {
+   // Some temporary dom stuff with jquery for now
+   if(!$) {
+     return;
+   }
 
    $('.pattern .source').append('<span class="expand-toggle"> - </span>');
 
    $('.expand-toggle').on('click', function(){
        $(this).parent('.source').toggleClass('is-collapsed');
-   })
+   });
 
    $('.pattern .source').addClass('is-collapsed');
 
+ };
+
+
+ var buildNavigator = function (){
+
+   var $select = $('#pattern-select');
+   var $titles = $('.pattern-title');
+
+   var options = $.map($titles, function(el) {
+     var option = $(el).text().trim();
+
+       return '<option value="'+option+'">'+option+'</option>';
+
+   });
+
+   $select.append(options);
+
+   $select.on('change', function(){
+       window.location.hash = $(this).val();
+   });
+
+ };
+
+
+$(function () {
+    buildSourceToggles();
+    buildNavigator();
 });
 
 </script>
@@ -31,3 +63,9 @@ $(function () {
 </head>
 
 <body style="background: white none">
+
+    <nav>
+        <select id="pattern-select">
+            <option value="#pattern-select">---Select Option----</option>
+        </select>
+    </nav>
