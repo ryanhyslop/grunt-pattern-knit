@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 
         if(options.css){
             if (!grunt.file.exists(options.css)) {
-                grunt.log.warn('CSS file specified "' + filepath + '" not found.');
+                grunt.log.warn('CSS file specified "' + options.css + '" not found.');
             } else {
                 grunt.file.copy(options.css, this.data.dest + 'styles/main.css');
             }
