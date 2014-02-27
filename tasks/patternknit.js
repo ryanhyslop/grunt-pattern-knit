@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
-                        header: 'assets/header.html',
+                        header: __dirname + '/../assets/header.html',
                         footer: '</body></html>'
                       }),
 
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 
             var content;
 
-            var template = grunt.file.read('assets/pattern-template.html');
+            var template = grunt.file.read(__dirname + '/../assets/pattern-template.html');
 
             content = _.template(template, { pattern: pattern, filename: filename });
 
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 
         });
 
-        grunt.file.copy('assets/base.css', this.data.dest + 'styles/base.css');
+        grunt.file.copy(__dirname + '/../assets/base.css', this.data.dest + 'styles/base.css');
 
         if(options.css){
             if (!grunt.file.exists(options.css)) {
@@ -103,8 +103,8 @@ module.exports = function(grunt) {
             }
 
         }
-        // Print a success message.
-        // grunt.log.ok("Pattern Library Has Been Created");
+
+        grunt.log.ok("Pattern Library Has Been Created");
 
       });
 
