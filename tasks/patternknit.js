@@ -20,12 +20,12 @@ module.exports = function(grunt) {
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
                         header: __dirname + '/../assets/header.html',
-                        footer: '</body></html>'
+                        footer: __dirname + '/../assets/footer.html',
                       }),
 
             headerHtml = grunt.file.read(options.header),
 
-            footerHtml = options.footer,
+            footerHtml = grunt.file.read(options.footer),
 
             patternHtml = [],
 
@@ -41,7 +41,9 @@ module.exports = function(grunt) {
 
             var template = grunt.file.read(__dirname + '/../assets/pattern-template.html');
 
-            content = _.template(template, { pattern: pattern, filename: filename });
+            var id = filename.split('.')[0];
+
+            content = _.template(template, { pattern: pattern, filename: filename, id: id });
 
             return content;
 
@@ -61,7 +63,7 @@ module.exports = function(grunt) {
         // Iterate over all specified file groups.
         this.files.forEach(function(f) {
             // Concat specified files.
-            grunt.log.warn(f);
+
             var src = f.src.filter(function(filepath) {
             // Warn on and remove invalid source files (if nonull was set).
             if (!grunt.file.exists(filepath)) {
@@ -71,7 +73,7 @@ module.exports = function(grunt) {
               return true;
             }
             }).map(function(filepath) {
-               grunt.log.writeln(filepath);
+
                 var filename = getFileName(filepath);
 
                 grunt.log.writeln('>> Reading: ' + filename);
@@ -92,7 +94,10 @@ module.exports = function(grunt) {
 
         });
 
+        //  Move Some Dependant Files
         grunt.file.copy(__dirname + '/../assets/base.css', this.data.dest + 'styles/base.css');
+        grunt.file.copy(__dirname + '/../assets/prism.css', this.data.dest + 'styles/prism.css');
+        grunt.file.copy(__dirname + '/../assets/prism.js', this.data.dest + 'js/prism.js');
 
         if(options.css){
             if (!grunt.file.exists(options.css)) {

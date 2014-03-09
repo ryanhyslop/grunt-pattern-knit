@@ -6,6 +6,8 @@
 
 <title>Pattern Library</title>
 
+<link rel="stylesheet" href="styles/prism.css">
+
 <link rel="stylesheet" href="styles/base.css">
 
 <link rel="stylesheet" href="styles/main.css">
@@ -20,11 +22,8 @@ var buildSourceToggles = function () {
    if(!$) {
      return;
    }
-
-   $('.pattern .source').append('<span class="expand-toggle"> - </span>');
-
-   $('.expand-toggle').on('click', function(){
-       $(this).parent('.source').toggleClass('is-collapsed');
+   $('.pattern-title').on('click', function(){
+       $(this).next('.source').toggleClass('is-collapsed');
    });
 
    $('.pattern .source').addClass('is-collapsed');
@@ -34,13 +33,14 @@ var buildSourceToggles = function () {
 
  var buildNavigator = function (){
 
-   var $select = $('#pattern-select');
-   var $titles = $('.pattern-title');
+   var $select = $('#patternknit-select');
+   var $patterns = $('.pattern');
 
-   var options = $.map($titles, function(el) {
-     var option = $(el).text().trim();
+   var options = $.map($patterns, function(el) {
+     var option = $(el).attr('id'),
+          title = $(el).find('.pattern-title').text().trim();
 
-       return '<option value="'+option+'">'+option+'</option>';
+       return '<option value="'+option+'">'+title+'</option>';
 
    });
 
@@ -64,8 +64,12 @@ $(function () {
 
 <body style="background: white none">
 
+  <header class="patternknit-header">
+
     <nav>
-        <select id="pattern-select">
-            <option value="#pattern-select">---Select Option----</option>
+        <select id="patternknit-select" class="patternknit-select">
+            <option value="#pattern-select">--- Choose a pattern</option>
         </select>
     </nav>
+
+  </header>
