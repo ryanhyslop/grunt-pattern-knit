@@ -1,4 +1,87 @@
 
+
+<script>
+var PK = {
+
+  buildSourceToggles : function () {
+
+
+   var titles = document.querySelectorAll('.pattern-title');
+   var sources = document.querySelectorAll('.pattern .source');
+
+
+    Array.prototype.forEach.call(sources, function(source) {
+
+      source.classList.add('is-collapsed');
+
+    });
+
+
+    Array.prototype.forEach.call(titles, function(title) {
+
+         title.addEventListener('click', function(){
+
+             var sourceElement = this.nextSibling;
+
+              if (sourceElement.nodeType != 1) {
+                  sourceElement = sourceElement.nextSibling;
+              }
+
+              sourceElement.classList.toggle('is-collapsed');
+
+         });
+
+    });
+
+  },
+
+  buildNavigator: function () {
+
+    var select = document.createElement('select');
+    var patterns = document.querySelectorAll('.pattern');
+    var options = '<option value="#pattern-select">Choose a pattern</option>';
+
+    Array.prototype.forEach.call(patterns, function(pattern) {
+
+      var option = pattern.getAttribute('id');
+      var title = pattern.querySelector('.pattern-title').textContent.trim();
+
+      options += '<option value="'+option+'">' + title + '</option>';
+
+    });
+
+
+    select.innerHTML = options;
+
+    select.setAttribute('id', 'patternknit-select');
+
+
+    select.addEventListener('change', function(){
+      debugger;
+      window.location.hash = this.options[this.selectedIndex].value;
+    });
+
+    document.getElementById('patternknit-nav').appendChild(select);
+
+  },
+
+  init: function () {
+
+    this.buildSourceToggles();
+
+    this.buildNavigator();
+
+  }
+
+}
+
+
+
+PK.init();
+
+
+</script>
+
     <script src="js/prism.js" data-default-language="markup"></script>
 
     </body>

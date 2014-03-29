@@ -12,64 +12,13 @@
 
 <link rel="stylesheet" href="styles/main.css">
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-<script>
-
-
-var buildSourceToggles = function () {
-   // Some temporary dom stuff with jquery for now
-   if(!$) {
-     return;
-   }
-   $('.pattern-title').on('click', function(){
-       $(this).next('.source').toggleClass('is-collapsed');
-   });
-
-   $('.pattern .source').addClass('is-collapsed');
-
- };
-
-
- var buildNavigator = function (){
-
-   var $select = $('#patternknit-select');
-   var $patterns = $('.pattern');
-
-   var options = $.map($patterns, function(el) {
-     var option = $(el).attr('id'),
-          title = $(el).find('.pattern-title').text().trim();
-
-       return '<option value="'+option+'">'+title+'</option>';
-
-   });
-
-   $select.append(options);
-
-   $select.on('change', function(){
-       window.location.hash = $(this).val();
-   });
-
- };
-
-
-$(function () {
-    buildSourceToggles();
-    buildNavigator();
-});
-
-</script>
-
 </head>
 
 <body style="background: white none">
 
   <header class="patternknit-header">
 
-    <nav>
-        <select id="patternknit-select" class="patternknit-select">
-            <option value="#pattern-select">--- Choose a pattern</option>
-        </select>
+    <nav id="patternknit-nav">
     </nav>
 
   </header>
