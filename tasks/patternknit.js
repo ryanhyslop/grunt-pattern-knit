@@ -11,6 +11,7 @@
 module.exports = function(grunt) {
 
   var _ = require('underscore');
+  var fs = require('fs');
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
@@ -54,6 +55,20 @@ module.exports = function(grunt) {
             var filename = filepath.split('/');
             filename = filename[filename.length - 1];
             return filename;
+        }
+
+        function createSymLink (srcpath, dest) {
+
+          var destpath = dest + srcpath.split('/').pop();
+
+          try {
+            fs.symlinkSync(srcpath, destpath, 'dir');
+            grunt.verbose.ok();
+          } catch(e) {
+            grunt.verbose.error();
+            grunt.log.error(e);
+            grunt.fail.warn('Failed to create symlink: ' + '(dir) ' + destpath + ' -> ' + srcpath + '.');
+          }
         }
 
         // Add header to array
@@ -104,6 +119,21 @@ module.exports = function(grunt) {
                 grunt.log.warn('CSS file specified "' + options.css + '" not found.');
             } else {
                 grunt.file.copy(options.css, this.data.dest + 'styles/main.css');
+            }
+        }
+
+        if( options.linkDirs ){
+
+            if( options.linkDirs.bower ) {
+                if (!grunt.file.exists(this.data.dest + 'bower_components')) {
+                    createSymLink(options.linkDirs.bower, this.data.dest);
+                }
+            }
+
+            if( options.linkDirs.images ) {
+                if (!grunt.file.exists(this.data.dest + 'images')) {
+                    createSymLink(options.linkDirs.images, this.data.dest);
+                }
             }
 
         }

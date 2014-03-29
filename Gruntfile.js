@@ -33,7 +33,12 @@ module.exports = function(grunt) {
     patternknit : {
       dist : {
         options : {
-          css: 'mycss.css'
+          css: 'mycss.css',
+          linkDirs : {
+            // relative to dest
+            // bower: '../bower_components',
+            // images: '../images'
+          }
         },
         src: ['pattern-library/patterns/**/*.html'],
         dest: 'pattern-library/'
