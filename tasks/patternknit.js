@@ -18,13 +18,17 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('patternknit', 'A task to build a static pattern and component library', function() {
 
+        var pkg = grunt.file.readJSON('package.json');
+
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
                         header: __dirname + '/../assets/header.html',
                         footer: __dirname + '/../assets/footer.html',
                       }),
 
-            headerHtml = grunt.file.read(options.header),
+            headerTpl = grunt.file.read(options.header),
+
+            headerHtml = _.template(headerTpl, { site: pkg.name }),
 
             footerHtml = grunt.file.read(options.footer),
 
@@ -72,7 +76,6 @@ module.exports = function(grunt) {
         }
 
         // Add header to array
-
         patternHtml.push(headerHtml);
 
         // Iterate over all specified file groups.
@@ -114,6 +117,8 @@ module.exports = function(grunt) {
         grunt.file.copy(__dirname + '/../assets/prism.css', this.data.dest + 'styles/prism.css');
         grunt.file.copy(__dirname + '/../assets/prism.js', this.data.dest + 'js/prism.js');
 
+
+
         if(options.css){
             if (!grunt.file.exists(options.css)) {
                 grunt.log.warn('CSS file specified "' + options.css + '" not found.');
@@ -123,7 +128,7 @@ module.exports = function(grunt) {
         }
 
         if( options.linkDirs ){
-
+            // This is currently quite fragile, pass in an array of objects and interate instead?
             if( options.linkDirs.bower ) {
                 if (!grunt.file.exists(this.data.dest + 'bower_components')) {
                     createSymLink(options.linkDirs.bower, this.data.dest);
@@ -133,6 +138,12 @@ module.exports = function(grunt) {
             if( options.linkDirs.images ) {
                 if (!grunt.file.exists(this.data.dest + 'images')) {
                     createSymLink(options.linkDirs.images, this.data.dest);
+                }
+            }
+
+            if( options.linkDirs.fonts ) {
+                if (!grunt.file.exists(this.data.dest + 'fonts')) {
+                    createSymLink(options.linkDirs.fonts, this.data.dest);
                 }
             }
 
