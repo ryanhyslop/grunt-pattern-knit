@@ -8,7 +8,7 @@ body {
     left: 0;
     top: 0;
     color: #444;
-    background: rgba(107, 134, 192, 0.2);
+    background: #C1CFEE;
     border-bottom: 2px solid rgba(107, 134, 192, 0.4);
     opacity: 0.5;
     padding: 0.5em;
@@ -64,7 +64,8 @@ body {
     width: 100%;
     min-width: 320px;
     position: relative;
-    min-height: 150px;
+    min-height: 300px;
+    overflow: scroll;
     box-sizing: border-box;
     padding: 0 1em;
     margin-top: 2em;
