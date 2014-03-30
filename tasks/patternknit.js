@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 
   var _ = require('underscore');
   var fs = require('fs');
+  var path = require('path');
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
@@ -62,17 +63,14 @@ module.exports = function(grunt) {
         }
 
         function createSymLink (srcpath, dest) {
-
-          var destpath = dest + srcpath.split('/').pop();
-
-          try {
-            fs.symlinkSync(srcpath, destpath, 'dir');
-            grunt.verbose.ok();
-          } catch(e) {
-            grunt.verbose.error();
-            grunt.log.error(e);
-            grunt.fail.warn('Failed to create symlink: ' + '(dir) ' + destpath + ' -> ' + srcpath + '.');
-          }
+            try {
+                fs.symlinkSync(srcpath, dest, 'dir');
+                grunt.verbose.ok();
+            } catch(e) {
+                grunt.verbose.error();
+                grunt.log.error(e);
+                grunt.fail.warn('Failed to create symlink: ' + '(dir) ' + dest + ' -> ' + srcpath + '.');
+            }
         }
 
         // Add header to array
@@ -127,27 +125,28 @@ module.exports = function(grunt) {
             }
         }
 
-        if( options.linkDirs ){
-            // This is currently quite fragile, pass in an array of objects and interate instead?
-            if( options.linkDirs.bower ) {
-                if (!grunt.file.exists(this.data.dest + 'bower_components')) {
-                    createSymLink(options.linkDirs.bower, this.data.dest);
-                }
-            }
+        if( options.linkDirs.length ) {
 
-            if( options.linkDirs.images ) {
-                if (!grunt.file.exists(this.data.dest + 'images')) {
-                    createSymLink(options.linkDirs.images, this.data.dest);
-                }
-            }
+            var self = this;
+            var destPaths = this.data.dest.split('/');
 
-            if( options.linkDirs.fonts ) {
-                if (!grunt.file.exists(this.data.dest + 'fonts')) {
-                    createSymLink(options.linkDirs.fonts, this.data.dest);
-                }
-            }
+            options.linkDirs.forEach(function(link){
 
+                var linkPaths = link.split('/');
+
+                var cleanedPath = linkPaths.filter(function(paths){
+                    return destPaths.indexOf(paths) === -1;
+                });
+
+                cleanedPath = cleanedPath.join('/');
+
+                if (!grunt.file.exists(self.data.dest + cleanedPath)) {
+                    createSymLink(path.resolve(link), path.resolve(self.data.dest + cleanedPath));
+                }
+
+            });
         }
+
 
         grunt.log.ok("Pattern Library Has Been Created");
 

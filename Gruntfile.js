@@ -35,11 +35,8 @@ module.exports = function(grunt) {
         options : {
           css: 'mycss.css',
           // typekitId: '',
-          linkDirs : {
-            // relative to dest
-            // bower: '../bower_components',
-            // images: '../images'
-          }
+          // relative to grunt file
+          linkDirs : ['bower_components', 'images']
         },
         src: ['pattern-library/patterns/**/*.html'],
         dest: 'pattern-library/'
