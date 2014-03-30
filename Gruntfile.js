@@ -34,6 +34,7 @@ module.exports = function(grunt) {
       dist : {
         options : {
           css: 'mycss.css',
+          // typekitId: '',
           linkDirs : {
             // relative to dest
             // bower: '../bower_components',

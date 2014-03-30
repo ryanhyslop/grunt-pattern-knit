@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 
             headerTpl = grunt.file.read(options.header),
 
-            headerHtml = _.template(headerTpl, { site: pkg.name }),
+            headerHtml = _.template(headerTpl, { site: pkg.name , typekitId: options.typekitId || false }),
 
             footerHtml = grunt.file.read(options.footer),
 

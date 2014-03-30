@@ -13,6 +13,13 @@
 <!-- bower:css -->
 <!-- endbower -->
 
+<% if (typekitId) { %>
+
+<script type="text/javascript" src="//use.typekit.net/<%= typekitId %>.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+<% } %>
+
 <link rel="stylesheet" href="styles/main.css">
 
 </head>
