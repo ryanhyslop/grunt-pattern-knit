@@ -1,7 +1,7 @@
 {
   "name": "grunt-pattern-knit",
   "description": "A task to build a static pattern and component library",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "homepage": "https://github.com/ryanhyslop/grunt-pattern-knit",
   "author": {
     "name": "Ryan Hyslop",
