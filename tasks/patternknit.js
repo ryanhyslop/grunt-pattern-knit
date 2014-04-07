@@ -125,7 +125,7 @@ module.exports = function(grunt) {
             }
         }
 
-        if( options.linkDirs.length ) {
+        if( options.linkDirs && options.linkDirs.length ) {
 
             var self = this;
             var destPaths = this.data.dest.split('/');
